@@ -1,8 +1,8 @@
-$color-brick-1:#87CEEB;
-$color_green:#2E8B57;
-$color_yellow:#FFD700;
-$color_red:#FF6347;
-$color_grey:#FF6347;
+$color-brick-lv1:#87CEEB;
+$color-brick-lv2:#2E8B57;
+$color-birck-lv3:#FFD700;
+$color-brick-lv4:#FF6347;
+$color-rock:#FF6347;
 
 
 *{
@@ -28,6 +28,60 @@ $color_grey:#FF6347;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  .brick-container{
+    display: grid;
+    grid-template-columns: repeat(10, auto);
+    grid-gap: 5px;
+    pointer-events: none;
+    @mixin lv($color){
+      box-shadow: inset 0 0 20px $color;
+      border: 2px solid $color;
+    }
+    .brick{
+      height: 5vh;
+      background-color: rgb(0,0,0);
+      box-shadow: 0 0 5px #000;
+      border-radius: 10px;
+    }
+    .broken{
+      opacity: 0;
+    }
+    .lv0{
+      animation: blast 0.5s ease;
+      opacity: 0;
+      @keyframes blast {
+        25%{
+          transform: scale(1.3);
+          opacity: 0.7;
+        }
+        50%{
+          transform: scale(1.5);
+          opacity: 0.5;
+        }
+        75%{
+          transform: scale(1.7);
+          opacity: 0.3;
+        }
+        100%{
+          transform: scale(2.0);
+          opacity: 0;
+        }
+      }
+    }
+    .lv1{
+      @include lv($color-brick-lv1);
+    }
+    .lv2{
+      @include  lv($color-brick-lv2);
+    }
+    .lv3{
+      @include  lv($color-birck-lv3);
+    }
+    .lv4{
+      @include  lv($color-brick-lv4);
+    }
+
+  }
   #ball{
     position: absolute;
     height: 4vh;
