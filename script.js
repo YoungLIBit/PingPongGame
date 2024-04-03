@@ -5,7 +5,7 @@ var generateBricks = function(n,level){
     for(var i=0; i<n; i++){
         var brick = $('<div>'); //khởi tạo thẻ div mới
         brick.addClass('brick'); //thêm class 'brick'
-        brick.addClass('level'); //thêm class 'level'
+        brick.addClass(level); //thêm class 'level'
         brickContainer.append(brick); //thẻ mới tạo nằm trong thẻ có tên là brick-container - thẻ brick là phần tử con của brick-container
     }
 }
@@ -26,13 +26,13 @@ var generateLevelOne = function(){
     generateBricks(10, 'lv1');
 
 }
-
+generateLevelOne();
 
 // Move Pad, Ball and Collision
 var mainContainer = $('.main-container');
 var pad = $('#pad');
 var ball = $('#ball');
-
+var bricks = $('.brick');
 
 var gameRunning = 0;
 var ballTop = 0;
@@ -129,15 +129,15 @@ var onBallDroped = function (){
 // Kiểm tra va chạm giữa hai đối tượng
 var getConllisionBetween = function (e1, e2){
     // xác định vị trí của đối tượng 1 dựa trên Left và Top
-    left1 = e1.offset().left;
-    right1 = left1 + e1.width();
-    top1 = e1.offset().top;
-    bottom1 = top1 + e1.height();
+    var left1 = e1.offset().left;
+    var right1 = left1 + e1.width();
+    var top1 = e1.offset().top;
+    var bottom1 = top1 + e1.height();
     // Xác định vị trí của đối tượng 2 dựa trên Left và Top
-    left2 = e2.offset().left;
-    right2 = left2 + e2.width();
-    top2 = e2.offset().top;
-    bottom2 = top2 + e2.height();
+    var left2 = e2.offset().left;
+    var right2 = left2 + e2.width();
+    var top2 = e2.offset().top;
+    var bottom2 = top2 + e2.height();
     // Kiểm tra cạnh phải e1 nằm giữa khoảng cách cạnh trái và cạnh phải của e2
     if (right1 > left2 && right1 < right2) {
 
@@ -145,11 +145,11 @@ var getConllisionBetween = function (e1, e2){
         if (bottom1 > top2 && bottom1 < bottom2) {
             // Kiểm tra va chạm từ trái sang phải - cạnh phải của e1 va chạm với cạnh trái của e2
             if (bottom1 - top2 > right1 - left2) { //khoảng cách từ cạnh phải của e1 đến cạnh trái của e2 nhỏ hơn khoảng cách cạnh dưới của của e1 và cạnh trên của e2
-                console.log("111")
+                //console.log("111")
                 return "ltr" //Hướng từ trái sang phải ==> left to right - 'ltr'
             // Ngược lại là va chạm từ trên xuống dưới - cạnh dưới của của e1 va chạm với cạnh trên của e2
             } else {
-                console.log("112")
+                //console.log("112")
                 return "ttb"// Hướng từ trên xuống dưới ==> 'top to bottom - ttb'
 
             }
@@ -159,11 +159,11 @@ var getConllisionBetween = function (e1, e2){
             //Kiểm tra va chạm từ trái sang phải - cạnh phải của e1 chạm với cạnh trái của e2
             // if (top1 - bottom2 > right1 - left2) {
             if(bottom2 - top1 > right1 - left2){//Khoảng cách từ cạnh phải của e1 và cạnh trái của e2 nhỏ hơn khoảng cách cạnh dưới của e1 và cạnh trên của e2
-                console.log("121")
+                //console.log("121")
                 return "ltr" //Hướng từ trái sang phải ==> left to right - 'ltr'
             //Ngược lại là va chạm từ dưới lên trên - cạnh trên của e1 va chạm với cạnh dưới của e2
             } else {
-                console.log("122")
+                //console.log("122")
                 return "btt" // Hướng từ dưới lên trên ==> 'bottom to top - btt'
             }
         }
@@ -174,12 +174,12 @@ var getConllisionBetween = function (e1, e2){
         if (bottom1 > top2 && bottom1 < bottom2) {
             //Kiểm tra va chạm từ phải sang trái - cạnh trái của e1 va chạm với cạnh phải của e2
             if (bottom1 - top2 > right2 - left1) { //Kiểm tra khoảng cách va chạm
-                console.log("211") //nếu khoảng cách của cạnh bên phải của e1 với cạnh bên trái của e2
+                //console.log("211") //nếu khoảng cách của cạnh bên phải của e1 với cạnh bên trái của e2
                 return "rtl" //nhỏ hơn hơn khoảng cách của cạnh bên dưới của e1 với cạnh bên trên của e2
                 // ==> cạnh phải của e1 va chạm với cạnh trái của e2 - chiều từ phải sang trái
                 // right to left - 'rtl'
             } else { //Nếu khoảng cách của cạnh duướ của e1 với cạnh trên của e2
-                console.log("212") // nhỏ hơn khoảng cách của cạnh bên phải của e1 với cạnh bên trái của e2
+                //console.log("212") // nhỏ hơn khoảng cách của cạnh bên phải của e1 với cạnh bên trái của e2
                 return "ttb" // ==> cạnh bên dưới của e1 va chạm với cạnh trên của e2 - chiều từ trên xuống dưới
             //     top to bottom - 'ttb'
             }
@@ -188,10 +188,10 @@ var getConllisionBetween = function (e1, e2){
         if (top1 < bottom2 && top1 > top2) {
             //Kiểm tra va chạm từ phải sang trái - cạnh trái của e1 đến cạnh phải của e2
             if (top1 - bottom2 > right2 - left1) { //Kiểm tra nếu khoảng cách của cạnh trái của e1 đến cạnh cạnh phải của e2
-                console.log("221") //nhỏ hơn khoảng cách của cạnh trên của e1 và cạnh dưới của e2
+                //console.log("221") //nhỏ hơn khoảng cách của cạnh trên của e1 và cạnh dưới của e2
                 return "rtl" //right to left - 'rtl' => chiều từ phải sang trái
             } else { //Ngược lại
-                console.log("222")
+                //console.log("222")
                 return "btt" //bottom to top 'btt' ==> chiều từ dưới lên trên
             }
         }
@@ -230,6 +230,61 @@ var checkPadCollision = function (){
         // }
     }
 }
+
+// Function thay đổi brick khi đuược va chạm
+var onCollisionWithBrick = function(ball, brick , collision){
+
+    if(brick.hasClass('lv1')){ //nếu va chạm với brick mà brick lv1 thì sẽ mất
+        brick.removeClass('lv1');
+        brick.addClass('broken');
+        brick.addClass('lv0');
+
+    }else if(brick.hasClass('lv4')){ //nếu va chạm với brick mà brick lv4 thì sẽ trở thành lv3
+        brick.removeClass('lv4');
+        brick.addClass('lv3');
+    }else if(brick.hasClass('lv3')){//nếu va chạm với brick mà brick lv3 thì sẽ trở thành lv2
+        brick.removeClass('lv3');
+        brick.addClass('lv2');
+    }else if(brick.hasClass('lv2')){//nếu va chạm với brick mà brick lv2 thì sẽ trở thành lv1
+        brick.removeClass('lv2');
+        brick.addClass('lv1');
+    }
+}
+
+var ignoreBrickCollision = false; //Bỏ qua va chạm
+var checkBrickCollision = function(){
+    if(ignoreBrickCollision){ //Nếu va chạm được bỏ qua thì không thực thi gì cả
+        return;
+    }
+    for(let brick of bricks){ //duyệt tất cả các brick liên tục
+
+        if(ignoreBrickCollision){ //nếu va chạm được bỏ qua thì không thực thi gì cả
+            return;
+        }
+        if($(brick).hasClass('broken')){ //nếu brick có lớp 'broken' - ý là không tồn tại brick
+            continue; //bỏ qua brick đó
+        }
+        //gọi lại hàm va chạm, set e1 là ball, e2 là từng brick được duyệt qua - va chạm giữa ball và brick
+        var collision = getConllisionBetween(ball, $(brick));
+        //nếu va chạm không trả về gì đồng nghĩa là không va chạm thì bỏ qua phần tử đó
+        if(!collision){
+            continue;
+        }
+        onCollisionWithBrick(ball,$(brick), collision); //gọi lại hàm thay đổi brick khi va chạm
+        ignoreBrickCollision = true; // va chạm được bỏ qua
+        // console.log(ignoreBrickCollision);
+        setTimeout(function(){ //set lại ignoreBrickCollision với thời gian gấp đôi tốc độ gi chuyển của quả bóng
+            ignoreBrickCollision = false;
+        }, ballMoveDelay * 2);
+        if(collision === 'rtl' || collision ==='ltr'){ //nếu va chạm từ phải sang trái hoặc từ trái sang phải
+            ballsDirection.left *= -1; //set tọa độ ngang của nó ngược lại với tọa độ hiện tại
+        }
+        if(collision === 'ttb' || collision ==='btt'){//nếu va chạm từ trên xuống dưới hoặc từ dưới lên trên
+            ballsDirection.top*=-1;//set tọa độ dọc của nó ngược lại với tọa độ hiện tại
+        }
+
+    }
+}
 // Function hướng quả bóng di chuyển khi chạm vào tường
 var checkWallCollision = function (){
     if(ballLeft > mainContainer.width() - ball.width() - 1){ //kiểm tra va chạm bên phải của mainContainer
@@ -248,6 +303,7 @@ var checkWallCollision = function (){
 
 var checkCollision = function (){
     checkWallCollision();
+    checkBrickCollision();
     checkPadCollision();
 }
 // quả bóng di chuyển theo mặc định, khi va chạm vào pad va chạm vào tường
@@ -257,10 +313,16 @@ var moveBall = function () {
     mainContainer.css('--ball-left', ballLeft.toString()); //set giá trị left cho quả bóng
     mainContainer.css('--ball-top', ballTop.toString());//set giá trị top cho quả bóng
     checkCollision(); //kiểm tra va chạm để thay đổi giá trị trong phương hướng quá bóng (thay đổi phương hướng quả bóng khi va chạm)
-
+    checkEndGame();
 
 }
-
+var checkEndGame = function(){
+    if($('.broken').length === bricks.length){
+        console.log("Game finished");
+        clearInterval(timerId);
+        nextLevel();
+    }
+}
 var startGame = function (){
     startBallMove(); //set phương hướng mặc định khi ball bắt đầu di chuyển
 
@@ -283,3 +345,10 @@ $(function (){
     mainContainer.css('--ball-top',ballTop.toString());
 
 });
+
+// Intergrate
+
+var currentLevel = 1;
+var nextLevel = function(){
+
+}
