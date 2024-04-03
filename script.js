@@ -1,3 +1,34 @@
+// Generate Bricks
+var brickContainer = $('.brick-container');
+// tạo ra brick
+var generateBricks = function(n,level){
+    for(var i=0; i<n; i++){
+        var brick = $('<div>'); //khởi tạo thẻ div mới
+        brick.addClass('brick'); //thêm class 'brick'
+        brick.addClass('level'); //thêm class 'level'
+        brickContainer.append(brick); //thẻ mới tạo nằm trong thẻ có tên là brick-container - thẻ brick là phần tử con của brick-container
+    }
+}
+//tạo ra khoảng trắng brick
+var generateFakeBrick = function(n){
+    for(var i =0; i<n;i++){
+        var brick = $('<div>'); //khởi tạo thẻ div mới
+        brick.addClass('brick'); //thêm class 'brick'
+        brick.addClass('broken'); //thêm class 'broken'
+        brickContainer.append(brick); //thẻ mới tạo nằm trong thẻ có tên là brick-container - thẻ brick là phần tử con của brick-container
+    }
+}
+//Level 1
+var generateLevelOne = function(){
+    generateFakeBrick(10);
+    generateFakeBrick(10);
+    generateBricks(10, 'lv1');
+    generateBricks(10, 'lv1');
+
+}
+
+
+// Move Pad, Ball and Collision
 var mainContainer = $('.main-container');
 var pad = $('#pad');
 var ball = $('#ball');
