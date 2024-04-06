@@ -1,9 +1,11 @@
 $color-brick-lv1:#87CEEB;
 $color-brick-lv2:#2E8B57;
-$color-birck-lv3:#FFD700;
+$color-brick-lv3:#FFD700;
 $color-brick-lv4:#FF6347;
-$color-rock:#FF6347;
-
+$color-rock:#808080;
+$color-button-back:#A9A9A9;
+$color-contrast: linear-gradient(45deg,#87CEEB,#FF6347);
+$color-similar: linear-gradient(45deg,#2E8B57,#FFD700);
 
 *{
   margin: 0;
@@ -19,6 +21,182 @@ $color-rock:#FF6347;
   --power-up-left:0;
   --power-up-top:0;
 }
+.lobby{
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  border: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  @mixin option-element(){
+    background-color: purple;
+    padding: 50px;
+    margin: 20px;
+    border-radius: 5px;
+
+  }
+  .title-game{
+    font-size: 40px;
+    background: linear-gradient(45deg,yellow,purple);
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 10%;
+  }
+  .menu{
+    display: flex;
+    height: 50%;
+    width: 50%;
+    flex-direction: column;
+    background-color: yellow;
+    border: 2px yellow solid;
+    border-radius: 5px;
+    text-align: center;
+    color: black;
+
+    .play{
+      @include option-element;
+    }
+    .option{
+      @include option-element;
+    }
+    .instructions{
+      @include option-element;
+    }
+  }
+  .option-modal{
+    display: grid;
+    grid-template-rows: 10% 90%;
+    height: 50%;
+    width: 50%;
+    border: 2px purple solid;
+    border-radius: 5px;
+    .option-header{
+      display: flex;
+      align-items: center;
+      .back{
+        flex: 1;
+        background: $color-button-back;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-align: center;
+
+      }
+      .option-title{
+        flex: 2;
+        font-size: 200%;
+        font-weight: bold;
+        text-align: center;
+        background: linear-gradient(45deg,#FFD700,purple);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+      .space{
+        flex:1;
+      }
+    }
+    .option-level{
+      display: grid;
+      grid-template-columns: repeat(2,auto);
+      grid-gap: 5px;
+
+
+      border-radius: 5px;
+      color: black;
+      place-items: center;
+      .level{
+        display: flex;
+        height: 75%;
+        width: 75%;
+        justify-content: center;
+        align-items: center;
+        background-color: #FFD700;
+        border: 2px purple solid;
+        border-radius: 5px;
+      }
+    }
+  }
+  .instructions-modal{
+
+    display: grid;
+    grid-template-rows: 10% 90%;
+    height: 50%;
+    width: 50%;
+    border: 2px purple solid;
+    border-radius: 5px;
+    .instructions-header{
+      display: flex;
+      align-items: center;
+      .back{
+        flex: 1;
+        background: $color-button-back;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-align: center;
+
+      }
+      .instructions-title{
+        flex: 2;
+        font-size: 200%;
+        font-weight: bold;
+        text-align: center;
+        background: linear-gradient(45deg,#FFD700,purple);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+      .space{
+        flex:1;
+      }
+    }
+    .instructions-content{
+      display: grid;
+      grid-template-columns: repeat(2,auto);
+      grid-gap: 5px;
+
+
+      border-radius: 5px;
+      color: black;
+      place-items: center;
+      .level{
+        display: flex;
+        height: 75%;
+        width: 75%;
+        justify-content: center;
+        align-items: center;
+        background-color: #FFD700;
+        border: 2px purple solid;
+        border-radius: 5px;
+      }
+    }
+  }
+}
+
+//Modal Game
+//Start
+.modal-content{
+  .modal-header{
+    text-align: center;
+  }
+  .modal-body{
+    text-align: center;
+  }
+  .modal-footer{
+    display: flex;
+    justify-content: space-around;
+  }
+}
+//End
+
+
+
+
 .main-container{
   position: relative;
   width: 100vw;
@@ -75,7 +253,7 @@ $color-rock:#FF6347;
       @include  lv($color-brick-lv2);
     }
     .lv3{
-      @include  lv($color-birck-lv3);
+      @include  lv($color-brick-lv3);
     }
     .lv4{
       @include  lv($color-brick-lv4);

@@ -1,3 +1,30 @@
+var lobby = $('#lobby');
+var menu = $('#menu');
+var play = $('.play');
+var option = $('.option');
+var instructions = $('.instructions');
+var optionModal = $('#option-modal');
+var instructionsModal = $('#instructions-modal');
+var backButton = $('.back');
+var game = $('#game');
+$(function (){
+    optionModal.hide();
+    instructionsModal.hide();
+    // game.hide();
+});
+var eClick = function(eClick,element1, element2){
+    eClick.on('click',function (event){
+        element1.hide();
+        element2.show();
+    });
+}
+// eClick(play, lobby, game);
+eClick(option,menu,optionModal);
+eClick(instructions, menu, instructionsModal);
+eClick(backButton,optionModal, menu );
+eClick(backButton, instructionsModal, menu);
+
+
 // Generate Bricks
 var brickContainer = $('.brick-container');
 // tạo ra brick
@@ -19,6 +46,15 @@ var generateFakeBrick = function(n){
     }
 }
 //Level 1
+var generateLevelTest = function(){
+    generateFakeBrick(10);
+    generateFakeBrick(10);
+    generateFakeBrick(10);
+    generateFakeBrick(3);
+    generateBricks(2, 'lv1');
+    generateFakeBrick(5);
+
+}
 var generateLevelOne = function(){
     generateFakeBrick(10);
     generateFakeBrick(10);
@@ -26,7 +62,27 @@ var generateLevelOne = function(){
     generateBricks(10, 'lv1');
 
 }
-generateLevelOne();
+var generateLevelTwo = function(){
+    generateFakeBrick(10);
+    generateFakeBrick(10);
+    generateFakeBrick(10);
+    generateBricks(10, 'lv1');
+    generateBricks(10, 'lv2');
+    generateBricks(5,'lv2');
+
+}
+var generateLevelThree = function(){
+    generateFakeBrick(10);
+    generateFakeBrick(10);
+    generateBricks(10, 'lv1');
+    generateBricks(10, 'lv2');
+    generateBricks(10, 'lv3');
+
+
+}
+// generateLevelTest();
+
+
 
 // Move Pad, Ball and Collision
 var mainContainer = $('.main-container');
@@ -329,6 +385,30 @@ var startGame = function (){
     timerId = setInterval(moveBall, ballMoveDelay); //gọi lại hàm di chuyển ball với thời gian gọi lại dựa ballMoveDelay đơn vị là milisecond
 }
 
+
+var pauseGameVar = false;
+
+$(document).keydown(function (event){
+    if(event.keyCode === 27){
+        if(!pauseGameVar){
+            pauseGame();
+            $('#gameModal').modal('show');
+        }else{
+            $('#gameModal').modal('hide');
+            resumeGame();
+        }
+    }
+});
+function pauseGame(){
+    pauseGameVar = true;
+    clearInterval(timerId);
+}
+function resumeGame(){
+    pauseGameVar = false;
+    timerId = setInterval(moveBall, ballMoveDelay);
+}
+
+
 $(function (){
     mainContainer.on('click', function (event){
         if(gameRunning === 0){
@@ -336,10 +416,10 @@ $(function (){
             startGame();
         }
     });
-})
+});
 // luôn luôn set vị trí ban đầu của ball. Cụ thể là nằm trên ở trung điểm của pad
 $(function (){
-    ballLeft = pad.offset().left + pad.height()/2 - ball.width()/2;
+    ballLeft = pad.offset().left + pad.width()/2 - ball.width()/2;
     ballTop = pad.offset().top - ball.height();
     mainContainer.css('--ball-left', ballLeft.toString());
     mainContainer.css('--ball-top',ballTop.toString());
@@ -347,8 +427,172 @@ $(function (){
 });
 
 // Intergrate
+var initializeGame = function(){
+    mainContainer = $('.main-container');
+    pad = $('#pad');
+    ball = $('#ball');
+    bricks = $('.brick');
+    gameRunning = 0;
+    padCollisionPoint = 0;
+    ballLife = maxLives;
+    timerId = 0;
+    ballsDirection = {
+        left: 0,
+        top: -3
+    }
+    ballTop = pad.offset().top - ball.height();
+    ballLeft = pad.offset().left + pad.width()/2 - ball.width()/2;
+    mainContainer.css('--ball-left', ballLeft.toString());
+    mainContainer.css('--ball-top', ballTop.toString());
+    clearInterval(timerId);
+}
 
-var currentLevel = 1;
+var levelId = 1;
+
+$(function (){
+    $('.play').on('click', function (){
+        localStorage.setItem('level', '1');
+    });
+    $('.level').on('click', function (){
+        levelId = $(this).attr('id');
+        localStorage.setItem('level', levelId);
+
+    });
+});
+// $(function (){
+//     if(localStorage.getItem('level')==1){
+//         generateLevelOne();
+//         ballMoveDelay = 6;
+//         initializeGame();
+//     }
+// });
+
+$(function (){
+
+        switch(localStorage.getItem('level')){
+
+           case '1':
+               brickContainer.html('');
+
+               generateLevelOne();
+               ballMoveDelay = 6;
+               initializeGame();
+               break;
+           case '2':
+               brickContainer.html('');
+               generateLevelTwo();
+               ballMoveDelay = 5;
+               initializeGame();
+               break;
+           case '3':
+               brickContainer.html('');
+               generateLevelThree();
+               ballMoveDelay = 4;
+               initializeGame();
+               break;
+           case '4':
+               brickContainer.html('');
+               generateLevelOne();
+               ballMoveDelay = 4;
+               initializeGame();
+               break;
+           case '5':
+               brickContainer.html('');
+               generateLevelOne();
+               ballMoveDelay = 3;
+               initializeGame();
+               break;
+           case '6':
+               brickContainer.html('');
+               generateLevelOne();
+               ballMoveDelay = 3;
+               initializeGame();
+               break;
+        }
+
+});
+
+levelId = localStorage.getItem('level');
+var keyOn = false;
+$(document).on('keydown', function(event){
+    if(event.key === 'l' || event.key === 'L'){
+        keyOn = true;
+    } else if(keyOn && event.key === '1'){
+        clearInterval(timerId);
+        chooseLevel(1);
+
+    } else if(keyOn && event.key === '2'){
+        clearInterval(timerId);
+        chooseLevel(2);
+
+    } else if(keyOn && event.key === '3'){
+        clearInterval(timerId);
+        chooseLevel(3);
+
+    }
+});
+var currentLevel = parseInt(levelId);
+console.log(currentLevel);
+
 var nextLevel = function(){
 
+    $("#nextModal").modal('show');
+    $('#next-button').off('click').on('click',function(){
+        brickContainer.html('');
+        currentLevel++;
+        console.log(currentLevel);
+        $("#nextModal").modal('hide');
+        if(currentLevel === 1){
+            generateLevelOne();
+            ballMoveDelay = 5;
+        }else if(currentLevel === 2){
+            generateLevelTwo();
+            console.log('create level 2');
+            ballMoveDelay = 6;
+        }else if(currentLevel === 3){
+            generateLevelThree();
+            console.log('create level 3');
+            ballMoveDelay = 5;
+        }
+        initializeGame();
+    });
+    $('#restart-button').off('click').on('click',function(){
+        brickContainer.html('');
+
+        $("#nextModal").modal('hide');
+
+        console.log(currentLevel);
+        if(currentLevel === 1){
+            console.log('thực thi level1')
+            generateLevelOne();
+            ballMoveDelay = 5;
+        }else if(currentLevel === 2){
+            console.log('thực thi level2')
+            generateLevelTwo();
+            ballMoveDelay = 6;
+        }else if(currentLevel === 3){
+            generateLevelThree();
+            ballMoveDelay = 5;
+        }
+        initializeGame();
+    });
+}
+var chooseLevel = function(level){
+    brickContainer.html('');
+    $("#confirmChangeModal").modal('show');
+    $('#confirm-button').off('click').on('click',function(){
+        currentLevel = level;
+        $("#confirmChangeModal").modal('hide');
+        if(level == 1){
+            generateLevelOne();
+            ballMoveDelay = 5;
+        }else if(level == 2){
+            generateLevelTwo();
+            ballMoveDelay = 6;
+        }else if(level == 3){
+            generateLevelThree();
+            ballMoveDelay = 5;
+        }
+        initializeGame();
+    });
 }
