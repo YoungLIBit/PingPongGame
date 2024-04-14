@@ -306,6 +306,14 @@ $color-similar: linear-gradient(45deg,#2E8B57,#FFD700);
       transform: translate(5px, 0);
     }
   }
+  .power-up{
+
+  }
+  .power-ball{
+    height: 5vh;
+    width: 5vw;
+    background-color: $color-brick-lv2;
+  }
 }
 
 

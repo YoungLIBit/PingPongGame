@@ -280,5 +280,10 @@
   border-top-right-radius: 10px;
   transform: translate(5px, 0);
 }
+.main-container .power-ball {
+  height: 5vh;
+  width: 5vw;
+  background-color: #2E8B57;
+}
 
 /*# sourceMappingURL=style.css.map */

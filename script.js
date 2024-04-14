@@ -82,6 +82,58 @@ var generateLevelThree = function(){
 }
 // generateLevelTest();
 
+// POWER UP
+// generatePowers
+function generatePowers(){
+    for (let brick of $('.brick')){ //Duyệt từng phần tử brick
+        if($(brick).hasClass('broken')){
+            continue; //Nếu brick có class broken thì bỏ qua brick đó
+        }
+        let num = Math.floor(Math.random() * 12); //đặt một biến làm tròn random * 12
+        if(num === 5){
+            $(brick).addClass('power'); //nếu giá trị num = 5 thì thêm class 'power'
+            console.log("power add to brick")
+        }
+    }
+}
+
+// Function dropPower
+var dropPower = function (brick){
+    if($(brick).hasClass('power')){  //Kiểm tra brick có power hay không, bằng cách kiểm tra có class power trong thẻ brick hay không
+        var powerTop = 0; //Khởi tạo tọa đồ của power, lấy chiều dọc của power set mặc định là 0
+        var powerLeft = 0;//Tương tự khởi tạo chiều ngang của power, set mặc định là 0
+        var powerup = $('<div>'); //tạo thẻ div
+        mainContainer.append(powerup); //thẻ đó là thẻ con của mainContainer
+        powerup.addClass('power-up'); //Thêm class css cho thẻ vừa tạo, cụ thể là power up
+        powerTop = $(brick).offset().top + $(brick).height()/2; // set vị trí của powerTop bằng cách, lấy vị trí top của brick có power so với thẻ cha của nó cộng với 1/2 chiều dọc của brick --> nằm ở giữa chiều dọc của brick
+        powerLeft = $(brick).offset().left + $(brick).width()/2;//set vị trí của powerLeft bằng cách, lấy vị trí left của brick có power so với thẻ cha của nó cộng với 1/2 chiều dài của brick --> nằm ở giữa chiều ngang của birck
+        powerup.css('--power-up-top', powerTop.toString()); //ta được vị trí của brick nằm ở center của brick và set nó vào thuộc tính biến cục bộ của css --power-up-top và --power-up-left
+        powerup.css('--power-up-left', powerLeft.toString());
+        var timerPowerId = setInterval(function (){ //setInterval để power rơi xuống tại vị trí hiện tại của nó trong brick có power
+            powerTop += 2; //mỗi lần rơi đồng nghĩa là tăng khoảng cách dọc của nó so với thẻ cha nó lên
+            powerup.css('--power-up-top', powerTop.toString()); //set lại tọa độ
+            powerup.css('--power-up-left', powerLeft.toString());
+            if(powerup){ //kiểm tra underfine, nếu không có power
+                if(getConllisionBetween(powerup, pad)){ //kiểm tra va chạm với pad --> pad nhận được power
+                    triggerPower(powerup); //gọi lại hàm triggerPower set thời gian effect của power
+                    powerup.remove(); //sau đó không cho hiển hiện power --> mất
+                    clearInterval(timerPowerId); //clearInterval chống tràn bộ nhớ
+                }else if(powerTop > mainContainer.height() - powerup.height() - 1 ){ //nếu nó rơi cạnh dưới của power vượt quá chiều dọc của mainCOntainer với sai số là 1 thì đồng nghĩa không nhặt được power
+                    powerup.remove(); //xóa power
+                    clearInterval(timerPowerId); //clearInterval chống tràn bộ nhớ
+                }
+            }
+        });
+    }
+}
+
+var triggerPower = function (powerup){
+        ball.addClass('power-ball'); //ball được hưởng effect thêm vào class power-ball
+        setTimeout(function (){ //đặt thời gian cho hiệu ứng quả bóng, kết thúc sau 10000ms
+            ball.removeClass('power-ball');
+        }, 10000);
+}
+
 
 
 // Move Pad, Ball and Collision
