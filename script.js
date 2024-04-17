@@ -39,9 +39,26 @@ var generateBricks = function(n,level){
 //tạo ra khoảng trắng brick
 var generateFakeBrick = function(n){
     for(var i =0; i<n;i++){
-        var brick = $('<div>'); //khởi tạo thẻ div mới
+        var brick = $('<div>'); //khởi tạo thẻ div mới 
         brick.addClass('brick'); //thêm class 'brick'
         brick.addClass('broken'); //thêm class 'broken'
+        brickContainer.append(brick); //thẻ mới tạo nằm trong thẻ có tên là brick-container - thẻ brick là phần tử con của brick-container
+    }
+}
+var generateStoneBrick = function(n){
+    for(var i =0; i<n;i++){
+        var brick = $('<div>'); //khởi tạo thẻ div mới
+        brick.addClass('brick'); //thêm class 'brick'
+        brick.addClass('stone'); //thêm class 'broken'
+        brickContainer.append(brick); //thẻ mới tạo nằm trong thẻ có tên là brick-container - thẻ brick là phần tử con của brick-container
+    }
+}
+var generateStoneMoveBrick = function(n){
+    for(var i= 0; i < n; i++){
+        var brick = $('<div>'); //khởi tạo thẻ div mới
+        brick.addClass('brick'); //thêm class 'brick'
+        brick.addClass('stone'); //thêm class 'broken'
+        brick.addClass('stone-move');
         brickContainer.append(brick); //thẻ mới tạo nằm trong thẻ có tên là brick-container - thẻ brick là phần tử con của brick-container
     }
 }
@@ -58,8 +75,8 @@ var generateLevelTest = function(){
 var generateLevelOne = function(){
     generateFakeBrick(10);
     generateFakeBrick(10);
-    generateBricks(10, 'lv1');
-    generateBricks(10, 'lv1');
+    generateBricks(10, "lv1");
+    generateBricks(10,"lv1")
 
 }
 var generateLevelTwo = function(){
@@ -77,7 +94,22 @@ var generateLevelThree = function(){
     generateBricks(10, 'lv1');
     generateBricks(10, 'lv2');
     generateBricks(10, 'lv3');
+    generateFakeBrick(3);
+    generateStoneBrick(2);
+    generateFakeBrick(3);
+    generateStoneBrick(2);
+}
 
+var generateLevelFour = function(){
+    generateFakeBrick(10);
+    generateFakeBrick(10);
+    generateBricks(10, 'lv1');
+    generateBricks(10, 'lv2');
+    generateBricks(10, 'lv3');
+    generateStoneMoveBrick(1);
+    generateFakeBrick(9);
+    generateFakeBrick(10);
+    generateStoneMoveBrick(1);
 
 }
 // generateLevelTest();
@@ -134,14 +166,56 @@ var triggerPower = function (powerup){
         }, 10000);
 }
 
+var stoneMove = function(){
+    console.log(123);
+    var stone = $('.stone');
+    var left = 2;
+                if (stone.hasClass('stone-move')) {
 
+                    var stoneMove = $('.stone-move');
+                    var stoneTop = 0;
+                    var stoneLeft = 0;
+                    stoneTop = stone.offset().top + stone.height() / 2;
+                    // stoneLeft =  stone.offset().left + stone.width()/2;
+                    stoneLeft = 1;
+                    console.log(stone.offset().left);
+                    stoneMove.css('--stone-move-left', stoneLeft.toString());
+                    // stoneMove.css('--stone-move-top', stoneTop.toString());
+                    console.log(timerStoneMoveId);
+                    var timerStoneMoveId =  setInterval(function () {
+                        stoneLeft += left;
+
+
+                            if (stoneLeft > 1 && stoneLeft > brickContainer.width() - stone.width()) {
+                                left *= -1;
+                                console.log('va chạm trái')
+                                console.log(stoneLeft);
+
+                                // stoneMove.css('--stone-move-top', stoneTop.toString());
+
+                            }
+                            if (stoneLeft < 1) {
+                                left *= -1;
+                                console.log(stoneLeft);
+                                // stoneMove.css('--stone-move-top', stoneTop.toString());
+
+                            }
+                        stoneMove.css('--stone-move-left', stoneLeft.toString());
+                        if($('.broken').length === bricks.length - $('.stone').length){
+                            clearInterval(timerStoneMoveId);
+                        }
+                    }, 5);
+
+                }
+
+}
 
 // Move Pad, Ball and Collision
 var mainContainer = $('.main-container');
 var pad = $('#pad');
 var ball = $('#ball');
 var bricks = $('.brick');
-
+var stones = $('.stone');
 var gameRunning = 0;
 var ballTop = 0;
 var ballLeft = 0;
@@ -311,7 +385,7 @@ var getConllisionBetween = function (e1, e2){
 // Function kiểm tra va chạm giữa ball va pad
 var checkPadCollision = function (){
     if(getConllisionBetween(ball,pad)){ //Kiểm tra xảy ra va chạm, giữa ball va pad
-        console.log(getConllisionBetween(ball,pad))
+        // console.log(getConllisionBetween(ball,pad))
         var pointMove1 = Math.sqrt(14); //đặt giá trị cho hướng di chuyển
         var pointMove2 = 2; // đặt giá trị cho hướng di chuyển
         padCollisionPoint = ball.offset().left + ball.width() /2; //lấy ra vị trí va chạm ở giữa quả bóng
@@ -342,20 +416,48 @@ var checkPadCollision = function (){
 // Function thay đổi brick khi đuược va chạm
 var onCollisionWithBrick = function(ball, brick , collision){
 
-    if(brick.hasClass('lv1')){ //nếu va chạm với brick mà brick lv1 thì sẽ mất
-        brick.removeClass('lv1');
-        brick.addClass('broken');
-        brick.addClass('lv0');
-
-    }else if(brick.hasClass('lv4')){ //nếu va chạm với brick mà brick lv4 thì sẽ trở thành lv3
-        brick.removeClass('lv4');
-        brick.addClass('lv3');
-    }else if(brick.hasClass('lv3')){//nếu va chạm với brick mà brick lv3 thì sẽ trở thành lv2
-        brick.removeClass('lv3');
-        brick.addClass('lv2');
-    }else if(brick.hasClass('lv2')){//nếu va chạm với brick mà brick lv2 thì sẽ trở thành lv1
-        brick.removeClass('lv2');
-        brick.addClass('lv1');
+    if(getConllisionBetween(ball,brick)){
+        if(ball.hasClass('power-ball')){
+            if(brick.hasClass('lv1')){ //nếu va chạm với brick mà brick lv1 thì sẽ mất
+                brick.removeClass('lv1');
+                brick.addClass('broken');
+                brick.addClass('lv0');
+                if(brick.hasClass('power')){
+                    dropPower(brick);
+                }
+            }else if(brick.hasClass('lv4')){ //nếu va chạm với brick mà brick lv4 thì sẽ trở thành lv3
+                brick.removeClass('lv4');
+                brick.addClass('lv2');
+            }else if(brick.hasClass('lv3')){//nếu va chạm với brick mà brick lv3 thì sẽ trở thành lv2
+                brick.removeClass('lv3');
+                brick.addClass('lv1');
+            }else if(brick.hasClass('lv2')){//nếu va chạm với brick mà brick lv2 thì sẽ trở thành lv1
+                brick.removeClass('lv2');
+                brick.addClass('broken');
+                brick.addClass('lv0');
+                if(brick.hasClass('power')){
+                    dropPower(brick);
+                }
+            }
+        }else{
+            if(brick.hasClass('lv1')){ //nếu va chạm với brick mà brick lv1 thì sẽ mất
+                brick.removeClass('lv1');
+                brick.addClass('broken');
+                brick.addClass('lv0');
+                if(brick.hasClass('power')){
+                    dropPower(brick);
+                }
+            }else if(brick.hasClass('lv4')){ //nếu va chạm với brick mà brick lv4 thì sẽ trở thành lv3
+                brick.removeClass('lv4');
+                brick.addClass('lv3');
+            }else if(brick.hasClass('lv3')){//nếu va chạm với brick mà brick lv3 thì sẽ trở thành lv2
+                brick.removeClass('lv3');
+                brick.addClass('lv2');
+            }else if(brick.hasClass('lv2')){//nếu va chạm với brick mà brick lv2 thì sẽ trở thành lv1
+                brick.removeClass('lv2');
+                brick.addClass('lv1');
+            }
+        }
     }
 }
 
@@ -383,7 +485,7 @@ var checkBrickCollision = function(){
         // console.log(ignoreBrickCollision);
         setTimeout(function(){ //set lại ignoreBrickCollision với thời gian gấp đôi tốc độ gi chuyển của quả bóng
             ignoreBrickCollision = false;
-        }, ballMoveDelay * 2);
+        }, ballMoveDelay);
         if(collision === 'rtl' || collision ==='ltr'){ //nếu va chạm từ phải sang trái hoặc từ trái sang phải
             ballsDirection.left *= -1; //set tọa độ ngang của nó ngược lại với tọa độ hiện tại
         }
@@ -425,8 +527,8 @@ var moveBall = function () {
 
 }
 var checkEndGame = function(){
-    if($('.broken').length === bricks.length){
-        console.log("Game finished");
+    if($('.broken').length === bricks.length - $('.stone').length){
+        // console.log("Game finished");
         clearInterval(timerId);
         nextLevel();
     }
@@ -440,24 +542,33 @@ var startGame = function (){
 
 var pauseGameVar = false;
 
-$(document).keydown(function (event){
-    if(event.keyCode === 27){
-        if(!pauseGameVar){
-            pauseGame();
-            $('#gameModal').modal('show');
-        }else{
-            $('#gameModal').modal('hide');
-            resumeGame();
+$(function (){
+    $(document).keydown(function (event){
+        if(event.keyCode === 27){
+            if(!pauseGameVar){
+                pauseGame();
+                $('#gameModal').modal('show');
+            }else{
+                $('#gameModal').modal('hide');
+                resumeGame();
+            }
         }
-    }
-});
+    });
+    $('#resumeGame').off('click').on('click', function (){
+        resumeGame();
+        $('#gameModal').modal('hide');
+    })
+})
+
 function pauseGame(){
     pauseGameVar = true;
     clearInterval(timerId);
 }
 function resumeGame(){
     pauseGameVar = false;
-    timerId = setInterval(moveBall, ballMoveDelay);
+    if(gameRunning===1){
+        timerId = setInterval(moveBall, ballMoveDelay);
+    }
 }
 
 
@@ -527,36 +638,43 @@ $(function (){
                brickContainer.html('');
 
                generateLevelOne();
+
                ballMoveDelay = 6;
                initializeGame();
                break;
            case '2':
                brickContainer.html('');
                generateLevelTwo();
+               generatePowers();
                ballMoveDelay = 5;
                initializeGame();
                break;
            case '3':
                brickContainer.html('');
                generateLevelThree();
+               generatePowers();
                ballMoveDelay = 4;
                initializeGame();
                break;
            case '4':
                brickContainer.html('');
-               generateLevelOne();
+               generateLevelFour();
+               stoneMove();
+               generatePowers();
                ballMoveDelay = 4;
                initializeGame();
                break;
            case '5':
                brickContainer.html('');
                generateLevelOne();
+               generatePowers();
                ballMoveDelay = 3;
                initializeGame();
                break;
            case '6':
                brickContainer.html('');
                generateLevelOne();
+               generatePowers();
                ballMoveDelay = 3;
                initializeGame();
                break;
@@ -581,10 +699,13 @@ $(document).on('keydown', function(event){
         clearInterval(timerId);
         chooseLevel(3);
 
+    }else if(keyOn && event.key === '4'){
+        clearInterval(timerId);
+        chooseLevel(4);
     }
 });
 var currentLevel = parseInt(levelId);
-console.log(currentLevel);
+// console.log(currentLevel);
 
 var nextLevel = function(){
 
@@ -592,19 +713,26 @@ var nextLevel = function(){
     $('#next-button').off('click').on('click',function(){
         brickContainer.html('');
         currentLevel++;
-        console.log(currentLevel);
+        // console.log(currentLevel);
         $("#nextModal").modal('hide');
         if(currentLevel === 1){
             generateLevelOne();
+
             ballMoveDelay = 5;
         }else if(currentLevel === 2){
             generateLevelTwo();
-            console.log('create level 2');
-            ballMoveDelay = 6;
+            generatePowers();
+            ballMoveDelay = 5;
         }else if(currentLevel === 3){
             generateLevelThree();
-            console.log('create level 3');
+            generatePowers();
             ballMoveDelay = 5;
+        }else if(currentLevel === 4){
+            generateLevelFour();
+            stoneMove();
+            generatePowers();
+
+            ballMoveDelay = 4;
         }
         initializeGame();
     });
@@ -613,17 +741,24 @@ var nextLevel = function(){
 
         $("#nextModal").modal('hide');
 
-        console.log(currentLevel);
+        // console.log(currentLevel);
         if(currentLevel === 1){
-            console.log('thực thi level1')
+            // console.log('thực thi level1')
             generateLevelOne();
             ballMoveDelay = 5;
         }else if(currentLevel === 2){
-            console.log('thực thi level2')
+            // console.log('thực thi level2')
             generateLevelTwo();
+            generatePowers();
             ballMoveDelay = 6;
         }else if(currentLevel === 3){
             generateLevelThree();
+            generatePowers();
+            ballMoveDelay = 5;
+        }else if(currentLevel === 4){
+            generateLevelFour();
+            stoneMove();
+            generatePowers();
             ballMoveDelay = 5;
         }
         initializeGame();
@@ -640,9 +775,16 @@ var chooseLevel = function(level){
             ballMoveDelay = 5;
         }else if(level == 2){
             generateLevelTwo();
+            generatePowers();
             ballMoveDelay = 6;
         }else if(level == 3){
             generateLevelThree();
+            generatePowers();
+            ballMoveDelay = 5;
+        }else if(level == 4){
+            generateLevelFour();
+            stoneMove();
+            generatePowers();
             ballMoveDelay = 5;
         }
         initializeGame();
