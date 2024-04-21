@@ -1,0 +1,2 @@
+Khởi chạy file menu.html lựa chọn nhiều chế độ chơi
+Bài giữa kì có push lên GitHub
