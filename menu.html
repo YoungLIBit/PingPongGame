@@ -1,3 +1,4 @@
+<!--21130220_DangHuuTrong_0833535010_DH21DTA-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>PING PONG GAME</title>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <!--    Bootstrap-->
 
@@ -23,7 +24,8 @@
     <div id="menu" class="menu">
         <a href="index.html" id="play" class="play">PLAY</a>
         <div class="option">OPTION</div>
-        <div class="instructions">INSTRUCTIONS</div>
+        <div class="instructions">GUIDE</div>
+        <div class="introduce">INTRODUCE</div>
     </div>
     <div id="option-modal" class="option-modal" style="display: grid">
         <div class="option-header">
@@ -38,23 +40,45 @@
             <a href="index.html" id="4" class="level">Level 4</a>
             <a href="index.html" id="5" class="level">Level 5</a>
             <a href="index.html" id="6" class="level">Level 6</a>
-            <div class="level" id="7">Level 7</div>
+
 
         </div>
     </div>
     <div id="instructions-modal" class="instructions-modal">
         <div class="instructions-header">
             <div class="back">BACK</div>
-            <div class="instructions-title">INSTRUCTIONS</div>
+            <div class="instructions-title">GUIDE</div>
             <div class="space"></div>
         </div>
         <div class="instructions-content">
-            <div  class="level">Level 1</div>
-            <div  class="level">Level 2 </div>
-            <div  class="level">Level 3</div>
-            <div  class="level">Level 4</div>
-            <div  class="level">Level 5</div>
-            <div  class="level">Level 6</div>
+            <p>_ Game Ping Pong là cho trò giải trí, di chuyển thanh điều khiển để khiến quả bóng di chuyển va chạm với các viên gạch </p>
+
+            <p>_ Sử dụng chuột để di chuyển thanh điều khiển để đỡ quả bóng hoặc sử dụng phím mũi tên trái và phải. Nhưng khuyên dùng chuột để trải nghiệm chơi game được tốt hơn</p>
+            <p>_ Nhiệm vụ của bạn khi chơi trò chơi này là di chuyển thanh điều khiển khiến quả bóng phá hủy hết tất cả các viên gạch để hoàn thành các level</p>
+            <p>_ Mỗi level trò chơi sẽ khó hơn khi lên level càng cao, sẽ xuất hiện các: powerup, chướng ngại vật, chướng ngại vật di chuyển, các viên đạn và lỗ đen</p>
+            <p>* Yêu cầu:</p>
+            <p>+ Hạn chế để quả bóng rơi ra khỏi thanh điều khiển, bạn sẽ có 10 mạng, mỗi lần rơi sẽ giảm đi 1 mạng, nếu số mạng là 0 thì bạn thất bại và trò chơi sẽ kết thúc</p>
+            <p>+ Vượt qua các thử thách của từng level, phát hủy hết tất cả các viên gạch, bạn sẽ thành công vượt qua các level</p>
+            <p>+ Mỗi viên gạch được quả bóng va chạm bạn sẽ được 100 điểm</p>
+            <p>+ Thành tích tối đa khi bạn hoàn thành xong 1 level là 3 sao, dựa trên số mạng hiện tại của bạn</p>
+
+
+        </div>
+    </div>
+    <div id="introduce-modal" class="introduce-modal">
+        <div class="introduce-header">
+            <div class="back"></div>
+            <div class="introduce-title">INTRODUCE</div>
+            <div class="space" id="introduce-close">x</div>
+        </div>
+        <div class="introduce-content">
+            <h3>SINH VIÊN THỰC HIỆN ĐỒ ÁN GIỮA KÌ MÔN HỌC FRONT END</h3>
+            <p>Họ và Tên: Đặng Hữu Trọng</p>
+            <p>Mã số sinh viên: 21130220</p>
+            <p>Lớp: DH21DTA</p>
+            <p>SĐT: 0833535010</p>
+            <p>Email: 21130220@st.hcmuaf.edu.vn</p>
+
         </div>
     </div>
 </div>
